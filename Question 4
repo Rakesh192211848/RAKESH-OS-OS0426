@@ -1,0 +1,27 @@
+#include<stdio.h>
+
+int main() {
+    int n = 6;  // number of memory partitions
+    int memory[] = {300, 600, 350, 200, 750, 125};  // memory partitions sizes
+    int i, j, process_size, allocated = 0;
+    
+    // ask for process sizes and allocate memory for each process
+    for(i = 0; i < 5; i++) {
+        printf("Enter process size: ");
+        scanf("%d", &process_size);
+        allocated = 0;
+        for(j = 0; j < n; j++) {
+            if(memory[j] >= process_size) {
+                printf("Process of size %d KB is allocated to partition %d of size %d KB.\n", process_size, j+1, memory[j]);
+                memory[j] -= process_size;
+                allocated = 1;
+                break;
+            }
+        }
+        if(!allocated) {
+            printf("Process of size %d KB can't be allocated.\n", process_size);
+        }
+    }
+    
+    return 0;
+}
