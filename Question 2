@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_FRAMES 3   // maximum number of page frames
+
+int page_frames[MAX_FRAMES];   // array to store page frames
+int page_faults = 0;           // counter for page faults
+
+int main() {
+    int page_reference[] = {4, 1, 2, 4, 3, 2, 1, 5};
+    int num_pages = sizeof(page_reference) / sizeof(int);
+    int next_frame = 0;   // index of next page frame to be replaced
+
+    // initialize page frames to -1 (i.e., empty)
+    int i;
+    for (i = 0; i < MAX_FRAMES; i++) {
+        page_frames[i] = -1;
+    }
+
+    // simulate page reference sequence
+    for (i = 0; i < num_pages; i++) {
+        int page = page_reference[i];
+        bool page_hit = false;
+
+        // check if page is already in page frames
+        int j;
+        for (j = 0; j < MAX_FRAMES; j++) {
+            if (page_frames[j] == page) {
+                page_hit = true;
+                break;
+            }
+        }
+
+        // if page is not in page frames, replace the oldest page
+        if (!page_hit) {
+            page_frames[next_frame] = page;
+            next_frame = (next_frame + 1) % MAX_FRAMES;
+            page_faults++;
+        }
+
+        // print current state of page frames
+        printf("%d: ", page);
+        for (j = 0; j < MAX_FRAMES; j++) {
+            if (page_frames[j] == -1) {
+                printf("- ");
+            } else {
+                printf("%d ", page_frames[j]);
+            }
+        }
+        printf("\n");
+    }
+
+    printf("Number of page faults: %d\n", page_faults);
+    return 0;
+}
