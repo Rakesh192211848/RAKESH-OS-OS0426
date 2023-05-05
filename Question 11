@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+void print_odd_numbers() {
+    pid_t pid = getpid();
+    printf("Odd numbers process with pid %d:\n", pid);
+    for (int i = 1; i <= 10; i++) {
+        if (i % 2 != 0) {
+            printf("%d\n", i);
+        }
+    }
+}
+
+void print_even_numbers() {
+    pid_t pid = getpid();
+    printf("Even numbers process with pid %d:\n", pid);
+    for (int i = 1; i <= 10; i++) {
+        if (i % 2 == 0) {
+            printf("%d\n", i);
+        }
+    }
+}
+
+void print_multiples_of_three() {
+    pid_t pid = getpid();
+    printf("Multiples of three process with pid %d:\n", pid);
+    for (int i = 1; i <= 10; i++) {
+        if (i % 3 == 0) {
+            printf("%d\n", i);
+        }
+    }
+}
+
+void print_multiples_of_five() {
+    pid_t pid = getpid();
+    printf("Multiples of five process with pid %d:\n", pid);
+    for (int i = 1; i <= 10; i++) {
+        if (i % 5 == 0) {
+            printf("%d\n", i);
+        }
+    }
+}
+
+int main() {
+    pid_t pid1, pid2, pid3, pid4;
+    
+    pid1 = fork();
+    
+    if (pid1 == 0) {
+        print_odd_numbers();
+    } else {
+        pid2 = fork();
+        if (pid2 == 0) {
+            print_even_numbers();
+        } else {
+            pid3 = fork();
+            if (pid3 == 0) {
+                print_multiples_of_three();
+            } else {
+                pid4 = fork();
+                if (pid4 == 0) {
+                    print_multiples_of_five();
+                }
+            }
+        }
+    }
+    
+    return 0;
+}
