@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_QUEUE_SIZE 100
+
+int main() {
+    int queue[MAX_QUEUE_SIZE];
+    int num_tracks = 5;
+    int head_pos = 50; // Starting head position
+    int total_head_movement = 0;
+    int num_requests = 0;
+
+    // Read in the track positions from the user
+    printf("Enter the track positions (separated by spaces):\n");
+    for (int i = 0; i < num_tracks; i++) {
+        scanf("%d", &queue[i]);
+    }
+
+    // Add the starting head position to the queue
+    queue[num_tracks] = head_pos;
+    num_requests = num_tracks + 1;
+
+    // Simulate FCFS disk scheduling algorithm
+    for (int i = 0; i < num_requests - 1; i++) {
+        int current_pos = queue[i];
+        int next_pos = queue[i + 1];
+        int head_movement = abs(next_pos - current_pos);
+        total_head_movement += head_movement;
+    }
+
+    // Print the results
+    printf("Total head movement: %d\n", total_head_movement);
+    printf("Average head movement: %.2f\n", (float)total_head_movement / num_requests);
+
+    return 0;
+}
